@@ -129,14 +129,14 @@ h1,h2,h3,p{margin:0}
 .play.rest .pbar{background:rgba(255,255,255,.25)}
 .pbar i{display:block;height:100%;background:var(--mark);transition:width .3s}
 .phead{display:flex;justify-content:space-between;align-items:center}
-.pmid{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.pmid{flex:1;display:flex;flex-direction:column;justify-content:safe center;min-height:0;overflow-y:auto;padding-bottom:10px}
 .pname{font:800 clamp(34px,10vw,48px)/.95 var(--disp);margin-top:4px;text-wrap:balance}
 .cue{color:var(--mute);font-size:15px;margin-top:6px;max-width:60ch}
-.big{font:800 clamp(110px,36vw,180px)/.85 var(--disp);font-variant-numeric:tabular-nums;margin:6px 0 2px}
+.big{font:800 clamp(64px,min(36vw,13vh),180px)/.85 var(--disp);font-variant-numeric:tabular-nums;margin:6px 0 2px}
 .big small{font-size:.32em;font-weight:600;margin-left:6px}
 .pact{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .pact .wide{grid-column:1/-1}
-.play .fig{max-height:30vh}
+.play .fig{max-height:24vh}
 .feel{display:grid;gap:10px;margin-top:18px}
 .seg{display:grid;gap:8px;margin:8px 0 18px}
 .seg.r3{grid-template-columns:repeat(3,1fr)}.seg.r2{grid-template-columns:repeat(2,1fr)}
@@ -214,7 +214,7 @@ const POSES={
   fold:{hd:[60,50],sh:[54,49],hp:[40,60],k1:[54,60],f1:[68,60],e1:[60,54],w1:[66,57]},
   lowLunge:{hd:[51,22],sh:[50,30],hp:[48,50],k1:[62,48],f1:[62,62],k2:[40,62],f2:[26,62],e1:[52,20],w1:[54,10]},
   puppy:{hd:[66,58],sh:[60,56],hp:[40,45],k1:[40,62],f1:[26,62],e1:[70,59],w1:[80,62]},
-  fig4:{hd:[21,57],sh:[28,58],hp:[49,59],k2:[56,43],f2:[68,44],k1:[62,49],f1:[52,42],e1:[40,52],w1:[55,47]},
+  fig4:{hd:[21,57],sh:[28,58],hp:[49,59],k2:[42.5,50],f2:[43.5,39],k1:[56,50.5],f1:[42,48.5],e1:[35,53.5],w1:[42,45]},
   tri:{hd:[50,14],sh:[50,22],hp:[50,42],k1:[48,52],f1:[46,62],k2:[52,52],f2:[54,62],e1:[44,8],w1:[49,17],e2:[57,10],w2:[45,7]},
   foldStand:{hd:[59,55],sh:[55,50],hp:[46,35],k1:[47,49],f1:[48,62],e1:[55,57],w1:[54,62]},
   dipUp:{hd:[44,16],sh:[43,24],hp:[48,43],k1:[60,49],f1:[70,60],e1:[42,34],w1:[42,43]},
@@ -527,6 +527,10 @@ function figure(id,animate){
 
 
   f.frames=ex.fr.map(fullPose); f.sp=ex.sp||850; f.svg=svg; f.t0=performance.now();
+  let top=Math.min(...f.frames.flatMap(q=>KEYS.map(k=>q[k][1])))-7;
+  if(ex.prop) top=Math.min(top,ex.prop==="bar"?-6:ex.prop==="chair"?18:ex.prop==="table"?28:48);
+  if(ex.wall) top=-6;
+  top=Math.max(-6,Math.min(top,30)); svg.setAttribute("viewBox","0 "+top.toFixed(1)+" 100 "+(66-top).toFixed(1));
   draw(f,f.frames[f.frames.length>1&&!animate?Math.min(1,f.frames.length-1):0]);
   if(animate&&f.frames.length>1&&!still){live.add(f); if(live.size===1) requestAnimationFrame(loop);}
   return svg;
