@@ -144,6 +144,12 @@ h1,h2,h3,p{margin:0}
 .opt small{display:block;color:var(--mute);font-weight:400;font-size:14px;line-height:1.35;margin-top:2px}
 .opt[aria-pressed="true"]{border-color:var(--acc);box-shadow:inset 0 0 0 1.5px var(--acc)}
 .lab{font-weight:600;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+a.chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 13px;border:1.5px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;background:var(--surf)}
+a.chip small{color:var(--mute);font-weight:500}
+a.chip[aria-current="page"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+a.chip[aria-current="page"] small{color:var(--acc-ink)}
+.sheet .chips{margin:10px 0 0}
 .plan{margin:10px 0 16px;padding-left:20px}.plan li{margin-bottom:8px}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}.pbar i{transition:none}}
 </style>
@@ -340,6 +346,25 @@ const EX={
   tapsC:{n:"Touches d’épaules sur chaise",c:"centre",t:"r",q:12,even:1,fr:["incl","inclTap"],prop:"chair",cx:67,flip:1,cue:"Mains sur le bord d’une chaise calée contre un mur, corps gainé, pieds écartés. Touche une épaule puis l’autre sans laisser le bassin tourner."},
   genouxAssis:{n:"Rentrés de genoux assis",c:"centre",t:"r",q:12,fr:["sitBack","sitTuck"],prop:"chair",cx:28,sp:900,cue:"Assis au bord de la chaise, mains agrippées à l’assise, buste légèrement en arrière. Ramène les genoux vers la poitrine puis retends les jambes sans poser les pieds."}
 };
+
+/* ---------- Groupes musculaires ---------- */
+const GROUPS={abdos:"Abdos",dos:"Dos",pecs:"Pectoraux",epaules:"Épaules",bras:"Bras",jambes:"Jambes",fessiers:"Fessiers",cardio:"Cardio",souplesse:"Souplesse"};
+const MUSC={
+  pompe:"pecs bras epaules abdos",diamant:"bras pecs",pike:"epaules bras",taps:"abdos epaules",planche:"abdos",hollow:"abdos",jambes:"abdos",crunch:"abdos",
+  squat:"jambes fessiers",fente:"jambes fessiers",saute:"jambes fessiers cardio",chaise:"jambes",cosaque:"jambes fessiers souplesse",patineur:"jambes fessiers",
+  pont:"fessiers dos",mollets:"jambes",superman:"dos fessiers",tirage:"dos epaules",jacks:"cardio",genoux:"cardio abdos",climbers:"cardio abdos",burpee:"cardio pecs jambes",
+  chien:"souplesse dos",grande:"souplesse dos",profond:"souplesse jambes",enfant:"souplesse dos",mur:"epaules bras abdos",corbeau:"bras epaules abdos",tuck:"abdos bras",lsit:"abdos bras",
+  chienT:"souplesse",pinceDebout:"souplesse",fenteBasse:"souplesse",pince:"souplesse",fessier:"souplesse",cobraT:"souplesse",chiot:"souplesse",triceps:"souplesse",
+  dips:"bras pecs epaules",decline:"pecs epaules bras",bulgare:"jambes fessiers",rowing:"dos bras",pompeG:"pecs bras",pompeI:"pecs bras",plancheG:"abdos",hollowG:"abdos",genouxLev:"abdos",
+  jacksPas:"cardio",swing:"souplesse",demiGE:"souplesse",pigeon:"souplesse",geAvant:"souplesse",papillon:"souplesse",geAssis:"souplesse",geDebout:"souplesse",
+  marche:"cardio",burpeeM:"cardio jambes",squatC:"jambes fessiers",grenouille:"bras epaules abdos",lateral:"abdos",lateralG:"abdos",deadbug:"abdos",birddog:"abdos dos",velo:"abdos",twist:"abdos",
+  tapsC:"abdos epaules",genouxAssis:"abdos"};
+const muscOf=id=>(MUSC[id]||"").split(" ").filter(Boolean);
+function chipsHtml(cur,ids){
+  return `<nav class="chips" aria-label="Groupes musculaires">`+(ids?"":`<a class="chip" href="#exercices"${cur?"":' aria-current="page"'}>Tout</a>`)+
+    Object.keys(GROUPS).filter(g=>!ids||ids.includes(g)).map(g=>{const n=Object.keys(EX).filter(id=>muscOf(id).includes(g)).length;
+      return `<a class="chip" href="#exercices/${g}"${g===cur?' aria-current="page"':""}>${GROUPS[g]}${ids?"":` <small>${n}</small>`}</a>`;}).join("")+`</nav>`;
+}
 
 /* ---------- Programme : 4 semaines de 7 jours ---------- */
 const DAYS=[
@@ -622,8 +647,19 @@ function viewProgram(){
     $view.append(g);
   }
 }
-function viewLibrary(){
+function viewLibrary(g){
+  if(g&&!GROUPS[g]) g="";
   $view.innerHTML=""; $view.append(h(`<div class="top"><span class="brand">Exercices</span><span class="when">${Object.keys(EX).length} mouvements</span></div>`));
+  $view.append(h(`<p class="lab" style="margin:0 0 4px">Par groupe musculaire</p>`+chipsHtml(g)));
+  if(g){
+    const all=Object.keys(EX).filter(id=>muscOf(id).includes(g));
+    const main=all.filter(id=>muscOf(id)[0]===g).map(id=>({id,n:EX[id].n})), also=all.filter(id=>muscOf(id)[0]!==g).map(id=>({id,n:EX[id].n}));
+    $view.append(h(`<h2 class="h2"></h2>`)); $view.lastElementChild.textContent=GROUPS[g]+" en priorité ("+main.length+")";
+    $view.append(exRows(main));
+    if(also.length){ $view.append(h(`<h2 class="h2"></h2>`)); $view.lastElementChild.textContent="Travaillent aussi : "+GROUPS[g].toLowerCase()+" ("+also.length+")"; $view.append(exRows(also)); }
+    $view.append(h(`<p class="note">Un exercice peut apparaître dans plusieurs groupes : les pompes, par exemple, travaillent les pectoraux, les bras, les épaules et le gainage.</p>`));
+    return;
+  }
   $view.append(h(`<button class="btn sm alt" id="bstr" type="button">Lancer les étirements complets, 8 min</button>`));
   $view.querySelector("#bstr").onclick=startStretch;
   $view.append(h(`<button class="btn sm alt" id="bge" type="button" style="margin-top:10px">Travailler le grand écart, 10 min</button>`));
@@ -695,11 +731,11 @@ function viewTrack(){
 }
 const VIEWS={aujourdhui:viewToday,programme:viewProgram,exercices:viewLibrary,suivi:viewTrack};
 function route(){
-  let name=(location.hash||"").slice(1); if(!VIEWS[name]) name="aujourdhui";
+  let [name,sub]=(location.hash||"").slice(1).split("/"); if(!VIEWS[name]) name="aujourdhui";
   document.querySelectorAll(".tabs a").forEach(a=>{if(a.getAttribute("href")==="#"+name) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");});
-  VIEWS[name](); window.scrollTo(0,0);
+  VIEWS[name](sub); window.scrollTo(0,0);
 }
-window.addEventListener("hashchange",route);
+window.addEventListener("hashchange",()=>{ $layer.querySelectorAll(".back").forEach(x=>x.remove()); route(); });
 
 /* ---------- Feuilles ---------- */
 function sheet(build){
@@ -716,6 +752,7 @@ function exSheet(id){
     sh.querySelector(".when").textContent=CATS[ex.c]; sh.querySelector("h3").textContent=ex.n;
     const st=document.createElement("div"); st.className="stage"; st.append(figure(id,true)); sh.append(st);
     const p=document.createElement("p"); p.textContent=ex.cue; sh.append(p);
+    if(muscOf(id).length) sh.append(h(`<p class="lab" style="margin:14px 0 0">Muscles travaillés</p>`+chipsHtml("",muscOf(id))));
   });
 }
 function daySheet(i){
