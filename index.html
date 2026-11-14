@@ -59,6 +59,7 @@ h1,h2,h3,p{margin:0}
 .fig.front .bk{opacity:1}
 .fig.front .bk .l{fill:color-mix(in srgb,var(--limb) 88%,#000);stroke:color-mix(in srgb,var(--limb) 88%,#000)}
 .fig .w{stroke:var(--mute);stroke-width:2.2;stroke-linecap:round}
+.fig .rope{stroke:#E0782F;stroke-width:1.6;stroke-linecap:round}
 .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;border-radius:14px;background:var(--acc);color:var(--acc-ink);font:800 22px/1.05 var(--disp);letter-spacing:.02em;padding:8px 16px;text-align:center}
 .btn.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
 .btn.sm{min-height:48px;font-size:20px}
@@ -269,8 +270,8 @@ const POSES={
   archerL:{fv:1,sw:4,hd:[40,0.5],sh:[41.5,8.5],hp:[43,28.5],k1:[41.5,39],f1:[42,45.5],k2:[45,39],f2:[44.5,45.5],e1:[27.5,12.5],w1:[32,2],e2:[56.5,6],w2:[68,2]},
   oneTop:{fv:1,sw:4,hd:[55,1],sh:[53,9],hp:[52,29],k1:[50.5,39.5],f1:[51,46],k2:[54,39.5],f2:[53.5,46],e1:[39.5,13.5],w1:[45,2],e2:[61,17],w2:[62,25]},
   oneHang:{fv:1,sw:4,hd:[53.5,12.5],sh:[52,20.5],hp:[51,40.5],k1:[49,51],f1:[49.5,57.5],k2:[53,51],f2:[52.5,57.5],e1:[46.5,12],w1:[45,2],e2:[59,29],w2:[60,37]},
-  oneTowel:{fv:1,sw:4,hd:[54,2],sh:[52.5,10],hp:[51.5,30],k1:[50,40.5],f1:[50.5,47],k2:[53.5,40.5],f2:[53,47],e1:[39.5,14],w1:[45,2],e2:[62.5,16],w2:[58.5,9.5]},
-  oneTowelHang:{fv:1,sw:4,hd:[53.5,12.5],sh:[52,20.5],hp:[51,40.5],k1:[49,51],f1:[49.5,57.5],k2:[53,51],f2:[52.5,57.5],e1:[46.5,12],w1:[45,2],e2:[59.5,22],w2:[58.5,13]},
+  oneTowel:{fv:1,sw:4,hd:[54,2],sh:[52.5,10],hp:[51.5,30],k1:[50,40.5],f1:[50.5,47],k2:[53.5,40.5],f2:[53,47],e1:[39.5,14],w1:[45,2],e2:[65.5,18],w2:[63,10]},
+  oneTowelHang:{fv:1,sw:4,hd:[53.5,12.5],sh:[52,20.5],hp:[51,40.5],k1:[49,51],f1:[49.5,57.5],k2:[53,51],f2:[52.5,57.5],e1:[46.5,12],w1:[45,2],e2:[62.5,21.5],w2:[63,14]},
   pistolUp:{hd:[50,13],sh:[50,21],hp:[50,41],k1:[50,52],f1:[51,62],k2:[59.5,46.5],f2:[69,51.5],e1:[57,27],w1:[66,28],e2:[56,28],w2:[65,29]},
   pistolLow:{hd:[61,27],sh:[57,34],hp:[47,51],k1:[58,55],f1:[51,62],k2:[58.5,48.5],f2:[70,46.5],e1:[66,35],w1:[75,34],e2:[65,36],w2:[74,35]},
   archerP:{...B.plank,e2:[81,52],w2:[89,62]},
@@ -350,7 +351,7 @@ const EX={
   archer:{n:"Tractions archer",c:"dos",t:"r",q:4,even:1,fr:["hangWide","archerL","hangWide","archerL~"],prop:"bar",sp:1500,cue:"Mains très écartées. Tire vers une main en gardant l’autre bras presque tendu, qui glisse sur la barre et aide le moins possible. Redescends, puis l’autre côté. C’est la porte d’entrée de la traction à un bras."},
   typewriter:{n:"Tractions machine à écrire",c:"dos",t:"r",q:4,even:1,fr:["archerL","archerL~"],prop:"bar",sp:2200,cue:"Monte en traction large, puis, menton toujours au-dessus de la barre, glisse lentement vers une main, puis vers l’autre. Un aller compte pour une répétition. Si tu descends en route, arrête la série."},
   negUn:{n:"Négatives à un bras",c:"dos",t:"r",q:2,even:1,fr:["oneTop","oneHang"],prop:"bar",sp:3000,cue:"Monte à deux bras, lâche une main en haut et redescends sur l’autre le plus lentement possible, 3 à 5 secondes. Coude serré, épaule active. Si tu tombes d’un coup, reviens aux archers."},
-  unAssist:{n:"Traction à un bras assistée",c:"dos",t:"r",q:2,even:1,fr:["oneTowelHang","oneTowel"],prop:"barT",sp:1800,cue:"Une main sur la barre, l’autre sur une serviette passée par-dessus. Tire surtout avec le bras de la barre. Plus ta main descend sur la serviette, moins elle aide."},
+  unAssist:{n:"Traction à un bras assistée",c:"dos",t:"r",q:2,even:1,fr:["oneTowelHang","oneTowel"],prop:"barT",sp:1800,cue:"Une main sur la barre, l’autre sur une corde ou une serviette passée par-dessus. Tire surtout avec le bras de la barre. Plus ta main descend sur la serviette, moins elle aide."},
   unBras:{n:"Traction à un bras",c:"fig",t:"r",q:2,even:1,fixq:1,fr:["oneHang","oneTop"],prop:"bar",sp:1800,cue:"Le sommet. Une seule tentative par bras, bien reposé, sans élan. Pieds serrés, fessiers et abdos contractés, tire le coude vers la hanche. Raté ? Fais une négative à un bras à la place : c’est comme ça qu’on y arrive, sur des mois."},
   pistol:{n:"Squat pistol",c:"jambes",t:"r",q:6,even:1,fr:["pistolUp","pistolLow"],sp:1700,cue:"Sur une jambe, l’autre tendue devant toi, bras devant pour l’équilibre. Descends jusqu’en bas, talon au sol, genou dans l’axe du pied, et remonte sans élan. Tiens un cadre de porte au début si besoin."},
   pompeArcher:{n:"Pompes archer",c:"haut",t:"r",q:6,even:1,fr:["archerP","archerPLow"],cue:"Mains très écartées. Descends vers une main pendant que l’autre bras reste tendu et ne fait que stabiliser. Remonte, puis l’autre côté."},
@@ -551,7 +552,8 @@ function figure(id,animate){
   const ex=EX[id], svg=el("svg","fig");
   svg.setAttribute("viewBox","0 -6 100 72"); svg.setAttribute("role","img"); svg.setAttribute("aria-label",ex.n);
   const g=el("line","g"); g.setAttribute("x1",4);g.setAttribute("x2",96);g.setAttribute("y1",63.8);g.setAttribute("y2",63.8); svg.append(g);
-  if(ex.prop){const pr=el("path","w"); pr.setAttribute("fill","none"); pr.setAttribute("d",ex.prop==="bloc"?"M50 50.5h8v13.3h-8z":ex.prop==="table"?"M28 30H97M31 30V63.8M94 30V63.8":ex.prop==="bar"?"M18 1.5H84M20 -6V63.8M82 -6V63.8":ex.prop==="barT"?"M18 1.5H84M20 -6V63.8M82 -6V63.8M57 1.5L58.5 17":ex.prop==="barS"?"M24 -6V63.8M24 2H46":"M"+(ex.flip?ex.cx+16:ex.cx)+" 20V63.8M"+ex.cx+" 44h16M"+(ex.flip?ex.cx:ex.cx+16)+" 44V63.8"); svg.append(pr);}
+  if(ex.prop){const pr=el("path","w"); pr.setAttribute("fill","none"); pr.setAttribute("d",ex.prop==="bloc"?"M50 50.5h8v13.3h-8z":ex.prop==="table"?"M28 30H97M31 30V63.8M94 30V63.8":ex.prop==="bar"?"M18 1.5H84M20 -6V63.8M82 -6V63.8":ex.prop==="barT"?"M18 1.5H84M20 -6V63.8M82 -6V63.8":ex.prop==="barS"?"M24 -6V63.8M24 2H46":"M"+(ex.flip?ex.cx+16:ex.cx)+" 20V63.8M"+ex.cx+" 44h16M"+(ex.flip?ex.cx:ex.cx+16)+" 44V63.8"); svg.append(pr);}
+  if(ex.prop==="barT"){const r=el("path","rope"); r.setAttribute("fill","none"); r.setAttribute("d","M63 1.5V23"); svg.append(r);}
   if(ex.wall){const w=el("line","w"); w.setAttribute("x1",ex.wall-3);w.setAttribute("x2",ex.wall-3);w.setAttribute("y1",-4);w.setAttribute("y2",63.8); svg.append(w);}
   const f=build(svg);
 
