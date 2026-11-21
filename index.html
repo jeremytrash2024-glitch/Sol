@@ -354,7 +354,7 @@ const EX={
   dips:{n:"Dips sur chaise",c:"haut",t:"r",q:8,fr:["dipUp","dipLow"],prop:"chair",cx:27,cue:"Mains sur le bord de l’assise, doigts vers l’avant, fesses juste devant la chaise. Plie les coudes vers l’arrière jusqu’à 90°, pas plus bas, puis repousse. Cale la chaise contre un mur. Plie les genoux pour alléger."},
   decline:{n:"Pompes pieds surélevés",c:"haut",t:"r",q:6,fr:["decl","declLow"],prop:"chair",cx:20,cue:"Pieds sur l’assise, mains au sol. Plus de poids sur les épaules et le haut des pectoraux qu’une pompe classique. Garde le bassin aligné."},
   bulgare:{n:"Squat bulgare",c:"jambes",t:"r",q:8,fr:["bulgUp","bulgLow"],prop:"chair",cx:22,cue:"Un pied posé derrière toi sur la chaise, descends à la verticale sur la jambe avant. Fais le nombre indiqué sur chaque jambe."},
-  rowing:{n:"Rowing sous table",c:"dos",t:"r",q:8,fr:["rowLow","rowUp"],prop:"table",cue:"Allongé sous une table lourde et stable, attrape le bord, corps gainé, talons au sol. Tire la poitrine vers la table. Teste la table avant : si elle bouge ou bascule, laisse tomber cet exercice."},
+  rowing:{n:"Rowing sous table",c:"dos",t:"r",q:8,fr:["rowLow","rowUp"],prop:"table",cue:"Allongé sous une table lourde et stable, attrape le bord, corps gainé, talons au sol. Tire la poitrine vers la table. Trop dur ? Plie les genoux, pieds à plat : plus le corps est debout, plus c’est facile. Teste la table avant : si elle bouge ou bascule, laisse tomber cet exercice."},
   suspension:{n:"Suspension à la barre",c:"dos",t:"s",q:20,fr:["hang"],prop:"bar",cue:"Mains en pronation, un peu plus écartées que les épaules, pieds décollés. Laisse-toi pendre, puis éloigne un peu les épaules des oreilles. Lâche avant que la prise ne glisse : c’est l’avant-bras qui apprend à tenir."},
   omoplates:{n:"Tirages d’omoplates",c:"dos",t:"r",q:8,fr:["hang","hangScap"],prop:"bar",sp:1300,cue:"Suspendu, bras tendus, coudes qui ne plient pas : abaisse et serre les omoplates pour monter de quelques centimètres, puis relâche doucement. C’est le premier centimètre d’une traction."},
   negative:{n:"Tractions négatives",c:"dos",t:"r",q:4,fr:["pullTop","hang"],prop:"bar",sp:2600,cue:"Monte le menton au-dessus de la barre en t’aidant d’une chaise ou d’un petit saut, puis descends le plus lentement possible, 4 à 5 secondes, jusqu’aux bras tendus. Repose les pieds et recommence. Quand tu tiens 5 secondes à chaque fois, tente une vraie traction."},
@@ -613,11 +613,15 @@ function alts(){
     add("patineur",["fente"]);add("burpee",["burpeeM"]);add("saute",["squat"]);}
   if(L===3){add("pompe",["pompeArcher"]);add("diamant",["pompeUn"]);add("squat",["pistol"]);add("mur",["atr"]);add("corbeau",["frontLever"]);add("patineur",["unBras","pistol"]);add("pont",["pont1"]);add("superman",["roue"]); if(S.low) R.saute=["pistol"].concat(R.saute||[]);}
   if(S.bar){add("tirage",[["suspension","negative","traction",["archer","traction"]][L]].flat()); if(L>=1) add("jambes",["genouxSusp"]);}
-  if(L>=1){add("diamant",["dips"]);add("fente",["bulgare"]);add("tirage",["rowing"]);}
+  add("tirage",["rowing"]);
+  if(L>=1){add("diamant",["dips"]);add("fente",["bulgare"]);}
   if(S.poign) add("tuck",[L>=2?"lsitP":"tuckP"]);
   if(L>=2){add("pompe",["decline"]);add("tuck",["lsit"]);}
   if(S.poign) add("pompe",["pompeP"]);
   if(S.elast){add("tirage",["tirageE"]); if(L<3) add("superman",[L===0?"ecarteE":"rowE"]);}
+  if(L<3&&S.bar) add("superman",["rowing"]);
+  /* Circuit : un tirage à la place des rotations russes dès qu'il y a de quoi tirer. */
+  R.twist=["rowing",L===0?"ecarteE":"rowE",L===0?"rowE":"ecarteE"].concat(R.twist||[]);
   return R;
 }
 const usable=c=>!!EX[c]&&(EX[c].prop!=="chair"||S.chair)&&(EX[c].prop!=="table"||S.table)&&(!/^bar/.test(EX[c].prop||"")||S.bar)&&(EX[c].prop!=="poign"||S.poign)&&(!EX[c].need||S[EX[c].need]);
@@ -637,7 +641,7 @@ function dayInfo(i){
   const cap=S.level===0&&!d.fix&&!cardio?32:0;
   for(;;){
   const steps=[];
-  if(d.warm) [[S.low?"jacksPas":"jacks","s",30],["squat","r",10],["chien","s",30]].forEach(([id,t,a])=>steps.push({id,n:EX[id].n,t,a,rest:10,tag:"Échauffement"}));
+  if(d.warm) [[S.low?"jacksPas":"jacks","s",30],["squat","r",10],["chien","s",30]].concat(S.elast&&/Poussée|Figures/.test(d.n)?[["ecarteE","r",12]]:[]).forEach(([id,t,a])=>steps.push({id,n:EX[id].n,t,a,rest:10,tag:"Échauffement"}));
   if(steps.length) steps[steps.length-1].rest=20;
   for(let r=1;r<=rounds;r++) items.forEach((it,k)=>{
     const last=k===items.length-1;
@@ -923,10 +927,10 @@ function planSheet(){
   if(S.low) n.push("Séances sans sauts, par défaut : jacks en pas de côté, burpees marchés, marche genoux hauts. Tes genoux et tes chevilles encaissent moins de chocs. Tu peux activer les sauts dans Réglages.");
   if(S.sex==="f") n.push("Volume de départ réduit de 15 % sur les pompes et les dips. C’est une moyenne, pas un verdict : réponds « trop facile » en fin de séance et ça remonte.");
   if(S.chair&&S.level===3) n.push("Avec ta chaise : squat bulgare."); else if(S.chair&&S.level>0) n.push("Avec ta chaise : dips et squat bulgare."); else if(S.chair) n.push("Avec ta chaise : pompes inclinées, squats sur chaise, touches d’épaules et rentrés de genoux assis.");
-  if(S.table&&S.level>0) n.push("Avec ta table : rowing, le vrai tirage pour le dos.");
+  if(S.table) n.push("Avec ta table : rowing, le vrai tirage pour le dos, "+(S.bar?"dans le circuit et à la place du superman, puisque la barre prend le tirage.":"dans la séance Jambes et dos et dans le circuit.")+(S.level===0?" Genoux pliés au début, c’est plus facile.":""));
   if(S.bar) n.push(["Avec ta barre : suspension pour construire la prise et les épaules. Les tirages d’omoplates et les négatives viennent ensuite, dans l’onglet Exercices.","Avec ta barre : tractions négatives à la place du tirage au sol, et relevés de genoux suspendu dans le circuit.","Avec ta barre : vraies tractions à la place du tirage au sol, et relevés de genoux suspendu dans le circuit.","Avec ta barre : tractions archer à la place du tirage, front lever groupé à la place du corbeau, et une tentative de traction à un bras par côté dans la séance Figures. Les négatives à un bras, la version assistée à la serviette et la machine à écrire sont dans l’onglet Exercices : c’est avec elles que la traction à un bras se construit, sur des mois."][S.level]);
   if(S.poign) n.push(S.level===3?"Avec tes poignées : équerre sur poignées, plus de hauteur sous les fesses. Les pompes sur poignées restent dans l’onglet Exercices.":S.level===2?"Avec tes poignées : équerre sur poignées, et pompes sur poignées si tu n’as pas de chaise pour surélever les pieds.":"Avec tes poignées : pompes plus profondes, la poitrine passe sous les mains, et soulevé groupé sur poignées."+(S.level===0?" Les pompes restent sur les genoux pour l’instant : les poignées marchent aussi comme ça, dans l’onglet Exercices.":""));
-  if(S.elast){const t=S.bar||(S.table&&S.level>0); n.push("Avec ton extenseur : "+(t?"la barre ou la table gardent le tirage, le tirage vertical à l’extenseur est dans l’onglet Exercices":"tirage vertical à la place du tirage au sol")+(S.level<3?", et "+(S.level===0?"écarté":"rowing")+" à la place du superman. Enfin de quoi tirer autant que tu pousses.":"."));}
+  if(S.elast){const t=S.bar||S.table, z=[]; z.push("écartés en échauffement des séances Poussée et Figures, pour préparer les épaules"); if(!t) z.push("tirage vertical à la place du tirage au sol"); if(S.level<3) z.push((S.level===0?"écarté":"rowing")+" à la place du superman"); if(!S.table) z.push((S.level===0?"écarté":"rowing")+" dans le circuit"); n.push("Avec ton extenseur : "+z.join(", ")+". Enfin de quoi tirer autant que tu pousses.");}
   n.push("Le module grand écart (10 min) est dans l’onglet Exercices et les jours de repos : 3 à 4 fois par semaine, toujours échauffé.");
   n.push("Après chaque séance, ta réponse (trop facile, juste, trop dur) recale le volume de la suivante.");
   sheet((sh,close)=>{
