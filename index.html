@@ -296,6 +296,11 @@ const POSES={
   exDown:{fv:1,sw:4,hd:[50,13],sh:[50,21],hp:[50,41],k1:[49,52],f1:[48,62],k2:[51,52],f2:[52,62],e1:[37,29.5],w1:[31,22],e2:[63,29.5],w2:[69,22]},
   rowEDown:{hd:[65,22],sh:[60,28],hp:[45,41],k1:[49,52],f1:[47,62],k2:[50,52],f2:[48,62],e1:[61,37.5],w1:[61,46.5],e2:[60,37.5],w2:[60,46.5]},
   rowEUp:{hd:[65,22],sh:[60,28],hp:[45,41],k1:[49,52],f1:[47,62],k2:[50,52],f2:[48,62],e1:[53,30.5],w1:[56,39],e2:[52,31],w2:[55,39.5]},
+  arcA:{fv:1,sw:4,hd:[50,13],sh:[50,21],hp:[50,41],k1:[49,52],f1:[48,62],k2:[51,52],f2:[52,62],e1:[36.5,23],w1:[27,23.5],e2:[45,25.5],w2:[35.5,24]},
+  arcB:{fv:1,sw:4,hd:[50,13],sh:[50,21],hp:[50,41],k1:[49,52],f1:[48,62],k2:[51,52],f2:[52,62],e1:[36.5,23],w1:[27,23.5],e2:[62.5,27.5],w2:[55.5,23]},
+  ruB:{hd:[71,43],sh:[64,46],hp:[44,47],k1:[44,60.5],f1:[32,61.5],k2:[33,46],f2:[21.5,44],e1:[64,53.5],w1:[64,61],e2:[65,53.5],w2:[65,61]},
+  curlDown:{hd:[50,13],sh:[50,21],hp:[50,41],k1:[50,52],f1:[51,62],k2:[50.5,52],f2:[51.5,62],e1:[51,31],w1:[52,40],e2:[49.5,31],w2:[50.5,40]},
+  curlUp:{hd:[50,13],sh:[50,21],hp:[50,41],k1:[50,52],f1:[51,62],k2:[50.5,52],f2:[51.5,62],e1:[51,31],w1:[59.5,25.5],e2:[49.5,31],w2:[50.5,40]},
   wgs:{hd:[69,34],sh:[63,40],hp:[49,52],k1:[66,48],f1:[66,62],k2:[36,58],f2:[22,61],e1:[63,51],w1:[62,62],e2:[64,29],w2:[65,18]},
   wgsDown:{hd:[69,34],sh:[63,40],hp:[49,52],k1:[66,48],f1:[66,62],k2:[36,58],f2:[22,61],e1:[63,51],w1:[62,62],e2:[60,51],w2:[58,61]}
 };
@@ -378,6 +383,9 @@ const EX={
   tirageE:{n:"Tirage vertical à l’extenseur",c:"dos",t:"r",q:10,fr:["exHigh","exDown"],need:"elast",band:[["w1","w2"]],sp:1400,cue:"Extenseur tenu bras tendus au-dessus de la tête. Écarte les mains en descendant les coudes vers les côtes, jusqu’à ce que les tubes passent devant le haut de ta poitrine. Remonte lentement, sans laisser claquer."},
   rowE:{n:"Rowing à l’extenseur",c:"dos",t:"r",q:10,fr:["rowEDown","rowEUp"],need:"elast",band:[["f1","w1"]],sp:1400,cue:"Pieds sur le milieu des tubes, buste penché à 45°, dos plat. Tire les poignées vers les hanches en serrant les omoplates, coudes près du corps. Plus tes pieds sont écartés sur les tubes, plus c’est dur."},
   ecarteE:{n:"Écarté à l’extenseur",c:"dos",t:"r",q:12,fr:["exFront","exOpen"],need:"elast",band:[["w1","w2"]],sp:1300,cue:"Bras tendus devant la poitrine, ouvre-les sur les côtés jusqu’à former un T, en serrant les omoplates. Reviens lentement. Le meilleur contrepoids aux pompes pour la posture."},
+  arcE:{n:"Tir à l’arc à l’extenseur",c:"dos",t:"r",q:8,even:1,fr:["arcA","arcB","arcA","arcA~","arcB~","arcA~"],need:"elast",band:[["w1","w2"]],sp:1100,cue:"Un bras tendu sur le côté à hauteur d’épaule, l’autre main près de la première. Tire la poignée jusqu’à ton épaule, coude haut, comme on bande un arc, et serre l’omoplate. Le bras tendu ne bouge pas. Reviens lentement, puis l’autre côté. C’est le geste de la traction archer, à l’horizontale."},
+  ruadeE:{n:"Ruade à l’extenseur",c:"jambes",t:"r",q:10,even:1,fr:["bdA","ruB"],need:"elast",band:[["f1","f2"]],sp:1300,cue:"À quatre pattes, une poignée bloquée sous le pied de la jambe d’appui, l’autre autour du pied qui travaille. Pousse ce pied vers l’arrière jusqu’à ce que la jambe soit tendue dans l’axe du dos, sans creuser les reins. Serre la fesse une seconde en haut. Tout un côté, puis l’autre."},
+  curlE:{n:"Curl à l’extenseur",c:"haut",t:"r",q:10,even:1,fr:["curlDown","curlUp"],need:"elast",band:[["f1","w1"]],sp:1300,cue:"Un pied sur une poignée, l’autre poignée en main, bras tendu. Plie le coude pour monter la main vers l’épaule, coude collé au corps, sans balancer le buste. Redescends lentement. Ça se fait aussi assis sur une chaise. Utile pour les premières tractions."},
   pompeG:{n:"Pompes sur les genoux",c:"haut",t:"r",q:8,fr:["kneePlank","kneePlankLow"],cue:"Genoux au sol, corps droit des genoux à la tête, fesses ni en l’air ni affaissées. Descends la poitrine entre les mains. Quand tu en fais 12 propres, passe aux pompes classiques."},
   pompeI:{n:"Pompes inclinées",c:"haut",t:"r",q:8,fr:["incl","inclLow"],prop:"chair",cx:67,flip:1,cue:"Mains sur le bord d’une chaise calée contre un mur, corps gainé. Plus les mains sont hautes, plus c’est facile : c’est la marche entre les genoux et les pompes au sol."},
   plancheG:{n:"Planche sur les genoux",c:"centre",t:"s",q:30,fr:["kneeForearm"],cue:"Avant-bras et genoux au sol, ligne droite des genoux aux épaules. Serre les fessiers et respire."},
@@ -416,7 +424,7 @@ const MUSC={
   dips:"bras pecs epaules",decline:"pecs epaules bras",bulgare:"jambes fessiers",rowing:"dos bras",pompeG:"pecs bras",pompeI:"pecs bras",plancheG:"abdos",hollowG:"abdos",genouxLev:"abdos",
   jacksPas:"cardio",swing:"souplesse",demiGE:"souplesse",pigeon:"souplesse",geAvant:"souplesse",papillon:"souplesse",geAssis:"souplesse",geDebout:"souplesse",
   marche:"cardio",burpeeM:"cardio jambes",squatC:"jambes fessiers",grenouille:"bras epaules abdos",lateral:"abdos",lateralG:"abdos",deadbug:"abdos",birddog:"abdos dos",velo:"abdos",twist:"abdos",
-  tapsC:"abdos epaules",genouxAssis:"abdos",suspension:"dos bras epaules",omoplates:"dos epaules",negative:"dos bras",traction:"dos bras epaules",genouxSusp:"abdos bras",archer:"dos bras epaules",typewriter:"dos bras epaules",negUn:"dos bras",unAssist:"dos bras",unBras:"dos bras abdos",pistol:"jambes fessiers",pompeArcher:"pecs bras epaules",pompeUn:"pecs bras abdos",atr:"epaules bras abdos",frontLever:"dos abdos bras",pont1:"fessiers jambes",pompeP:"pecs bras epaules",tuckP:"abdos bras epaules",lsitP:"abdos bras epaules",tirageE:"dos bras epaules",rowE:"dos bras",ecarteE:"dos epaules",roue:"dos epaules souplesse"};
+  tapsC:"abdos epaules",genouxAssis:"abdos",suspension:"dos bras epaules",omoplates:"dos epaules",negative:"dos bras",traction:"dos bras epaules",genouxSusp:"abdos bras",archer:"dos bras epaules",typewriter:"dos bras epaules",negUn:"dos bras",unAssist:"dos bras",unBras:"dos bras abdos",pistol:"jambes fessiers",pompeArcher:"pecs bras epaules",pompeUn:"pecs bras abdos",atr:"epaules bras abdos",frontLever:"dos abdos bras",pont1:"fessiers jambes",pompeP:"pecs bras epaules",tuckP:"abdos bras epaules",lsitP:"abdos bras epaules",tirageE:"dos bras epaules",rowE:"dos bras",ecarteE:"dos epaules",arcE:"dos epaules bras",ruadeE:"fessiers jambes",curlE:"bras",roue:"dos epaules souplesse"};
 const muscOf=id=>(MUSC[id]||"").split(" ").filter(Boolean);
 function chipsHtml(cur,ids){
   return `<nav class="chips" aria-label="Groupes musculaires">`+(ids?"":`<a class="chip" href="#exercices"${cur?"":' aria-current="page"'}>Tout</a>`)+
@@ -618,7 +626,7 @@ function alts(){
   if(S.poign) add("tuck",[L>=2?"lsitP":"tuckP"]);
   if(L>=2){add("pompe",["decline"]);add("tuck",["lsit"]);}
   if(S.poign) add("pompe",["pompeP"]);
-  if(S.elast){add("tirage",["tirageE"]); if(L<3) add("superman",[L===0?"ecarteE":"rowE"]);}
+  if(S.elast){add("chaise",["ruadeE"]); add("tirage",["tirageE"]); if(L<3) add("superman",[L===0?"ecarteE":"rowE"]);}
   if(L<3&&S.bar) add("superman",["rowing"]);
   /* Circuit : un tirage à la place des rotations russes dès qu'il y a de quoi tirer. */
   R.twist=["rowing",L===0?"ecarteE":"rowE",L===0?"rowE":"ecarteE"].concat(R.twist||[]);
@@ -641,7 +649,7 @@ function dayInfo(i){
   const cap=S.level===0&&!d.fix&&!cardio?32:0;
   for(;;){
   const steps=[];
-  if(d.warm) [[S.low?"jacksPas":"jacks","s",30],["squat","r",10],["chien","s",30]].concat(S.elast&&/Poussée|Figures/.test(d.n)?[["ecarteE","r",12]]:[]).forEach(([id,t,a])=>steps.push({id,n:EX[id].n,t,a,rest:10,tag:"Échauffement"}));
+  if(d.warm) [[S.low?"jacksPas":"jacks","s",30],["squat","r",10],["chien","s",30]].concat(S.elast&&/Poussée|Figures/.test(d.n)?[S.level===0?["ecarteE","r",12]:["arcE","r",8]]:[]).forEach(([id,t,a])=>steps.push({id,n:EX[id].n,t,a,rest:10,tag:"Échauffement"}));
   if(steps.length) steps[steps.length-1].rest=20;
   for(let r=1;r<=rounds;r++) items.forEach((it,k)=>{
     const last=k===items.length-1;
@@ -930,7 +938,7 @@ function planSheet(){
   if(S.table) n.push("Avec ta table : rowing, le vrai tirage pour le dos, "+(S.bar?"dans le circuit et à la place du superman, puisque la barre prend le tirage.":"dans la séance Jambes et dos et dans le circuit.")+(S.level===0?" Genoux pliés au début, c’est plus facile.":""));
   if(S.bar) n.push(["Avec ta barre : suspension pour construire la prise et les épaules. Les tirages d’omoplates et les négatives viennent ensuite, dans l’onglet Exercices.","Avec ta barre : tractions négatives à la place du tirage au sol, et relevés de genoux suspendu dans le circuit.","Avec ta barre : vraies tractions à la place du tirage au sol, et relevés de genoux suspendu dans le circuit.","Avec ta barre : tractions archer à la place du tirage, front lever groupé à la place du corbeau, et une tentative de traction à un bras par côté dans la séance Figures. Les négatives à un bras, la version assistée à la serviette et la machine à écrire sont dans l’onglet Exercices : c’est avec elles que la traction à un bras se construit, sur des mois."][S.level]);
   if(S.poign) n.push(S.level===3?"Avec tes poignées : équerre sur poignées, plus de hauteur sous les fesses. Les pompes sur poignées restent dans l’onglet Exercices.":S.level===2?"Avec tes poignées : équerre sur poignées, et pompes sur poignées si tu n’as pas de chaise pour surélever les pieds.":"Avec tes poignées : pompes plus profondes, la poitrine passe sous les mains, et soulevé groupé sur poignées."+(S.level===0?" Les pompes restent sur les genoux pour l’instant : les poignées marchent aussi comme ça, dans l’onglet Exercices.":""));
-  if(S.elast){const t=S.bar||S.table, z=[]; z.push("écartés en échauffement des séances Poussée et Figures, pour préparer les épaules"); if(!t) z.push("tirage vertical à la place du tirage au sol"); if(S.level<3) z.push((S.level===0?"écarté":"rowing")+" à la place du superman"); if(!S.table) z.push((S.level===0?"écarté":"rowing")+" dans le circuit"); n.push("Avec ton extenseur : "+z.join(", ")+". Enfin de quoi tirer autant que tu pousses.");}
+  if(S.elast){const t=S.bar||S.table, z=[]; z.push((S.level===0?"écartés":"tir à l’arc")+" en échauffement des séances Poussée et Figures, pour préparer les épaules"); z.push("ruade à la place de la chaise au mur pour les fessiers"); if(!t) z.push("tirage vertical à la place du tirage au sol"); if(S.level<3) z.push((S.level===0?"écarté":"rowing")+" à la place du superman"); if(!S.table) z.push((S.level===0?"écarté":"rowing")+" dans le circuit"); n.push("Avec ton extenseur : "+z.join(", ")+". Enfin de quoi tirer autant que tu pousses.");}
   n.push("Le module grand écart (10 min) est dans l’onglet Exercices et les jours de repos : 3 à 4 fois par semaine, toujours échauffé.");
   n.push("Après chaque séance, ta réponse (trop facile, juste, trop dur) recale le volume de la suivante.");
   sheet((sh,close)=>{
